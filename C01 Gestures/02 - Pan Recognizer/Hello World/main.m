@@ -13,11 +13,12 @@
 
 #pragma mark - DragView
 
-@interface DragView : UIImageView
+@interface DragView : UIImageView 类
 @end
 
 @implementation DragView
 {
+    // 前一次位置
     CGPoint previousLocation;
 }
 
@@ -27,23 +28,29 @@
     if (self)
     {
         self.userInteractionEnabled = YES;
+        // 创建拖动手势识别器
         UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+        //??? 
         self.gestureRecognizers = @[panRecognizer];
     }
     return self;
 }
 
+#pragma mark 实现拖动事件
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // Promote the touched view
+    // 提升触摸的视图
     [self.superview bringSubviewToFront:self];
     
     // Remember original location
+    // 记录之前的位置
     previousLocation = self.center;
 }
 
 - (void)handlePan: (UIPanGestureRecognizer *) gestureRecognizer
 {
+    // 记录当前相对于父视图的中点
     CGPoint translation = [gestureRecognizer translationInView:self.superview];
     self.center = CGPointMake(previousLocation.x + translation.x,
                               previousLocation.y + translation.y);
