@@ -14,10 +14,35 @@
 
 @implementation DragView
 {
-    CGFloat tx; // x translation
-    CGFloat ty; // y translation
-    CGFloat scale; // zoom scale
-    CGFloat theta; // rotation angle
+	CGFloat tx; // x translation
+	CGFloat ty; // y translation
+	CGFloat scale; // zoom scale
+	CGFloat theta; // rotation angle
+}
+
+- (instancetype)initWithImage:(UIImage *)image
+{
+	// Initialize and set as touchable
+	self = [super initWithImage:image];
+	if (self)
+	{
+		self.userInteractionEnabled = YES;
+		
+		// Reset geometry to identities
+		self.transform = CGAffineTransformIdentity;
+		tx = 0.0f; ty = 0.0f; scale = 1.0f;	theta = 0.0f;
+		
+		// Add gesture recognizer suite
+		UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotation:)];
+		UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+		UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+		self.gestureRecognizers = @[rot, pinch, pan];
+		for (UIGestureRecognizer *recognizer in self.gestureRecognizers)
+		{
+			recognizer.delegate = self;
+		}
+	}
+	return self;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -28,14 +53,14 @@
 	// initialize translation offsets
 	tx = self.transform.tx;
 	ty = self.transform.ty;
-    scale = self.scaleX;
-    theta = self.rotation;
+	scale = self.scaleX;
+	theta = self.rotation;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	UITouch *touch = [touches anyObject];
-	if (touch.tapCount == 3)
+	if (touch.tapCount == 3) // 三连击
 	{
 		// Reset geometry upon triple-tap
 		self.transform = CGAffineTransformIdentity;
@@ -51,14 +76,17 @@
 - (void)updateTransformWithOffset:(CGPoint)translation
 {
 	// Create a blended transform representing translation, rotation, and scaling
+	// 创建变形的仿射变换，以表示位置、旋转、缩放
+
 	self.transform = CGAffineTransformMakeTranslation(translation.x + tx, translation.y + ty);
 	self.transform = CGAffineTransformRotate(self.transform, theta);
-    
-    // Guard against scaling too low, by limiting the scale factor
-    if (scale > 0.5f)
-        self.transform = CGAffineTransformScale(self.transform, scale, scale);
-    else
-        self.transform = CGAffineTransformScale(self.transform, 0.5f, 0.5f);
+	
+	// Guard against scaling too low, by limiting the scale factor
+	// 只在某个范围以上才进行缩放
+	if (scale > 0.5f)
+		self.transform = CGAffineTransformScale(self.transform, scale, scale);
+	else
+		self.transform = CGAffineTransformScale(self.transform, 0.5f, 0.5f);
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)gestureRecognizer
@@ -82,31 +110,6 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
 	return YES;
-}
-
-- (instancetype)initWithImage:(UIImage *)image
-{
-	// Initialize and set as touchable
-    self = [super initWithImage:image];
-	if (self)
-    {
-        self.userInteractionEnabled = YES;
-        
-        // Reset geometry to identities
-        self.transform = CGAffineTransformIdentity;
-        tx = 0.0f; ty = 0.0f; scale = 1.0f;	theta = 0.0f;
-        
-        // Add gesture recognizer suite
-        UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotation:)];
-        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-        self.gestureRecognizers = @[rot, pinch, pan];
-        for (UIGestureRecognizer *recognizer in self.gestureRecognizers)
-        {
-            recognizer.delegate = self;
-        }
-    }
-	return self;
 }
 
 @end
