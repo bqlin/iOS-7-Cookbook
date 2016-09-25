@@ -44,6 +44,7 @@
 
 - (void)handlePan:(UIPanGestureRecognizer *)gestureRecognizer
 {
+    // 采用传统的方式（直接frame操作）来限制拖动范围
 	CGPoint translation = [gestureRecognizer translationInView:self.superview];
 	CGPoint newcenter = CGPointMake(previousLocation.x + translation.x, previousLocation.y + translation.y);
 	
