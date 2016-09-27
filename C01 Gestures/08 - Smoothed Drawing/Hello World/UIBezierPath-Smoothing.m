@@ -19,6 +19,7 @@
     if (points.count < 4) return [self copy];
     
     // Add control points to make the math make sense
+    // 添加控制点来让算法有意义
     // Via Josh Weinberg
     [points insertObject:[points objectAtIndex:0] atIndex:0];
     [points addObject:[points lastObject]];
@@ -29,6 +30,7 @@
     smoothedPath.lineWidth = self.lineWidth;
     
     // Draw out the first 3 points (0..2)
+    // 绘制头3点
     [smoothedPath moveToPoint:POINT(0)];
     
     for (NSUInteger index = 1; index < 3; index++)
@@ -59,6 +61,7 @@
     }
     
     // finish by adding the last point
+    // 通过添加最后的点结束
     [smoothedPath addLineToPoint:POINT(points.count - 1)];
     
     return smoothedPath;

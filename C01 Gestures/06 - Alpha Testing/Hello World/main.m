@@ -14,16 +14,19 @@
 #pragma mark - Helper Functions
 
 // Return the alpha byte offset
+/// 返回位移透明度
 static NSUInteger alphaOffset(NSUInteger x, NSUInteger y, NSUInteger w){return y * w * 4 + x * 4 + 0;}
 
 
 
 // Return a byte array of image
+/// 返回图像的比特数组
 NSData *getBitmapFromImage(UIImage *sourceImage)
 {
     if (!sourceImage) return nil;
     
     // Establish color space
+    // 建立颜色空间
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     if (colorSpace == NULL)
     {
@@ -32,6 +35,7 @@ NSData *getBitmapFromImage(UIImage *sourceImage)
     }
     
     // Establish context
+    // 建立上下文
     int width = sourceImage.size.width;
     int height = sourceImage.size.height;
     CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, width * 4, colorSpace, (CGBitmapInfo) kCGImageAlphaPremultipliedFirst);
@@ -43,10 +47,12 @@ NSData *getBitmapFromImage(UIImage *sourceImage)
     }
     
     // Draw source into context bytes
+    // 在上下文上绘制源
     CGRect rect = (CGRect){.size = sourceImage.size};
     CGContextDrawImage(context, rect, sourceImage.CGImage);
     
     // Create NSData from bytes
+    // 从比特流创建 NSData
     NSData *data = [NSData dataWithBytes:CGBitmapContextGetData(context) length:(width * height * 4)];
     CGContextRelease(context);
     
@@ -78,6 +84,7 @@ NSData *getBitmapFromImage(UIImage *sourceImage)
     return self;
 }
 
+/// 给定的点是否在范围内
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
 	if (!CGRectContainsPoint(self.bounds, point)) return NO;

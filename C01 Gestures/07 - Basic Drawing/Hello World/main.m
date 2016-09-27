@@ -19,36 +19,40 @@
 
 @implementation TouchTrackerView
 {
-    UIBezierPath *path;
+	UIBezierPath *path;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self)
-    {
+	self = [super initWithFrame:frame];
+	if (self)
+	{
 		self.multipleTouchEnabled = NO;
 	}
 	return self;
 }
 
+/// 清除贝塞尔曲线
 - (void)clear
 {
-    path = nil;
-    [self setNeedsDisplay];
+	path = nil;
+	[self setNeedsDisplay];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	// 初始化曲线
 	path = [UIBezierPath bezierPath];
 	path.lineWidth = IS_IPAD? 8.0f : 4.0f;
 	
+	// 绘制曲线起点
 	UITouch *touch = [touches anyObject];
 	[path moveToPoint:[touch locationInView:self]];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	// 添加起点到移动点的曲线
 	UITouch *touch = [touches anyObject];
 	[path addLineToPoint:[touch locationInView:self]];
 	[self setNeedsDisplay];
@@ -56,6 +60,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	// 继续绘制
 	UITouch *touch = [touches anyObject];
 	[path addLineToPoint:[touch locationInView:self]];
 	[self setNeedsDisplay];
@@ -84,15 +89,15 @@
 
 - (void)loadView
 {
-    self.view = [[TouchTrackerView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    [self.view setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.navigationController setNavigationBarHidden:YES];
+	self.view = [[TouchTrackerView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+	[self.view setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+	self.view.backgroundColor = [UIColor whiteColor];
+	[self.navigationController setNavigationBarHidden:YES];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return NO;
+	return NO;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -102,12 +107,12 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [self clear];
+	[self clear];
 }
 
 - (void)clear
 {
-    [(TouchTrackerView *)self.view clear];
+	[(TouchTrackerView *)self.view clear];
 }
 
 @end
@@ -123,14 +128,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    _window.tintColor = COOKBOOK_PURPLE_COLOR;
-    TestBedViewController *tbvc = [[TestBedViewController alloc] init];
-    tbvc.edgesForExtendedLayout = UIRectEdgeNone;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:tbvc];
-    _window.rootViewController = nav;
-    [_window makeKeyAndVisible];
-    return YES;
+	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	_window.tintColor = COOKBOOK_PURPLE_COLOR;
+	TestBedViewController *tbvc = [[TestBedViewController alloc] init];
+	tbvc.edgesForExtendedLayout = UIRectEdgeNone;
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:tbvc];
+	_window.rootViewController = nav;
+	[_window makeKeyAndVisible];
+	return YES;
 }
 
 @end
@@ -140,9 +145,9 @@
 
 int main(int argc, char *argv[])
 {
-    @autoreleasepool
-    {
-        int retVal = UIApplicationMain(argc, argv, nil, @"TestBedAppDelegate");
-        return retVal;
-    }
+	@autoreleasepool
+	{
+		int retVal = UIApplicationMain(argc, argv, nil, @"TestBedAppDelegate");
+		return retVal;
+	}
 }

@@ -12,6 +12,8 @@
 
 @implementation UIBezierPath (Points)
 
+
+// ???: 怎么用的
 void getPointsFromBezier(void *info, const CGPathElement *element) 
 {
     NSMutableArray *bezierPoints = (__bridge NSMutableArray *)info;    
@@ -21,6 +23,7 @@ void getPointsFromBezier(void *info, const CGPathElement *element)
     CGPoint *points = element->points;
     
     // Add the points if they're available (per type)
+    // 添加每种类型可用的点
     if (type != kCGPathElementCloseSubpath)
     {
         [bezierPoints addObject:VALUE(0)];
@@ -35,6 +38,7 @@ void getPointsFromBezier(void *info, const CGPathElement *element)
 - (NSArray *)points
 {
     NSMutableArray *points = [NSMutableArray array];
+    // ???: 该方法如何使用
     CGPathApply(self.CGPath, (__bridge void *)points, getPointsFromBezier);
     return points;
 }
