@@ -11,7 +11,7 @@
 #import "Utility.h"
 
 
-#pragma mark - TouchTrackerView
+#pragma mark - TouchTrackerView 类
 
 @interface TouchTrackerView : UIView
 - (void) clear;
@@ -23,6 +23,7 @@
     NSMutableDictionary *touchPaths;
 }
 
+// 通过存储绘图初始化建立新视图
 - (instancetype)initWithFrame:(CGRect)frame
 {
 	self = [super initWithFrame:frame];
@@ -35,12 +36,14 @@
 	return self;
 }
 
+// 移除所有存在的线条，但不移除正在绘制的线条
 - (void)clear
 {
     [strokes removeAllObjects];
     [self setNeedsDisplay];
 }
 
+// 通过添加新路径到 touchPath 字典开始触摸
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	for (UITouch *touch in touches)
@@ -57,6 +60,7 @@
 	}
 }
 
+// 通过增长和连接路径，跟踪触摸动作
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	for (UITouch *touch in touches)
@@ -71,6 +75,7 @@
 	[self setNeedsDisplay];
 }
 
+// 在触摸结束，移动路径到 strokes 数组
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	for (UITouch *touch in touches)
@@ -88,6 +93,7 @@
 	[self touchesEnded:touches withEvent:event];
 }
 
+// 用暗紫色绘制存在的线条，用亮紫色绘制正在绘制的线条
 - (void)drawRect:(CGRect)rect
 {
 	[COOKBOOK_PURPLE_COLOR set];
