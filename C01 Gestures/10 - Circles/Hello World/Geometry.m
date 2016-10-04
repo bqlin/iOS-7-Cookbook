@@ -8,22 +8,26 @@
 
 #import "Geometry.h"
 
+/// 传入矩形的中点
 CGPoint GEORectGetCenter(CGRect rect)
 {
     return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
 }
 
+/// 绘制给定中点的矩形
 CGRect GEORectAroundCenter(CGPoint center, float dx, float dy)
 {
     return CGRectMake(center.x - dx, center.y - dy, dx * 2, dy * 2);
 }
 
+/// 矩形内的矩形
 CGRect GEORectCenteredInRect(CGRect rect, CGRect mainRect)
 {
     CGFloat dx = CGRectGetMidX(mainRect)-CGRectGetMidX(rect);
     CGFloat dy = CGRectGetMidY(mainRect)-CGRectGetMidY(rect);
     return CGRectOffset(rect, dx, dy);
 }
+
 
 CGPoint GEOPointOffset(CGPoint aPoint, CGFloat dx, CGFloat dy)
 {

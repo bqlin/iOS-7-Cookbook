@@ -1,0 +1,12 @@
+# 创建自定义手势识别器
+
+从 UIGestureRecognizer 中继承子类，即可构建出自己的圆圈手势识别器。
+
+你应在自己的类中引入 UIGestureRecognizerSubcliass.h。实现 UIGestureRecognizer 的子类时，重写方法时先调用父类的方法。
+
+手势分为两大类：连续手势和不连续手势。圆圈手势识别器是不连续的，它要么识别出圆圈手势，要么识别不出来。而双值聚拢及拖动则为连续手势。手势识别器会在手势的整个生命周期中不断发送相关的更新（设置state属性产生更新）。
+
+手势识别器就是描述指尖状态的状态机。每个识别器刚开始都处于possible状态（UIGestureRecognizerStatePossible），对于连续手势来说，识别器会经历一些列changed状态（UIGestureRecognizerStateChanged），而对于不连续手势来说，如果能够识别出这样的手势，那么识别器就会进入UIGestureRecognizerStateRecognized状态，若识别不出来，则进入UIGestureRecognizerStateFailed状态。除非我们把状态（state）设置为possible或failed，否则每次更新状态的时候，识别器都会向其目标发送动作消息。除非我们将状态（state）设置为possible或failed，否则每次更新状态时，识别器都会向其发送动作消息。
+
+> 提示
+> 作为覆写超类方法所应提倡的一条原则，一旦发现无法辨别出手势，我们就应该令手势识别器尽快“失败”。若是能够识别出手势，就应当把与手势有关的信息存储在程序的属性里面。圆圈手势识别器把检测到的圆圈保存起来，使用户能够知道手势出现在何处。
