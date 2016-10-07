@@ -1,0 +1,16 @@
+# 实时的触摸反馈
+
+本方案提供了一套简单的（它们统称为TOUCHkit），使程序可以具备实时的触摸反馈层，以供开发者项他人演示该程序的用法。
+
+TOUCHkit提供了一种方式，使开发者可以编译出两个版本的程序，一种供普通场合使用，另一种供演示使用。
+
+## 拦截并转发触摸事件
+
+TOUCHkit之所以能够在屏幕上实现触摸反馈效果，是因为它拦截了触摸事件，并据此在应用程序通常的界面上创建了叠加图样，然后又把事件转发给了应用程序。TOUCHkit的视图位于程序原来的界面之上，而自定义的窗口类则可以抓取用户的触摸事件，并将其以圆圈形式展示到TOUCHkit的视图上面。然后，它会把事件转发给程序，这样看上去就像是用户和普通的UIWindow交互一样。
+
+## 实现TOUCHkit的TOUCHkitView类
+
+TOUCHkit的TOUCHkitView是个简单而清晰的UIView单例。当应用程序首次请求访问该类的共享实例时，它才会创建sharedInstance，创建的时候，该类会把sharedInstance添加到程序的key window中。由于该类的userInteractionEnable标志是NO，所以即便我们通过标准的touchesBegan、touchesMoved、touchesEnded以及touchesCancelled等时间回调方法处理这些事件时，它们依然能够继续向后传播，并到达TOUCHkit下方的界面里，使得系统可以将其纳入响应者链。
+
+处理触摸事件的方法会在每个触摸点上绘制一个圆圈，并创建一个指向theTouches的强指针，待其绘制完成后，再清空指针。
+
