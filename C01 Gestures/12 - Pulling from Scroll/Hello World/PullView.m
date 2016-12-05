@@ -48,11 +48,13 @@ typedef enum {
 	return self;
 }
 
+// 让两个手势识别器同时运行
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
 }
 
+// 通过检测滑动平移
 - (void)handlePan:(UIPanGestureRecognizer *)gestureRecognizer
 {
 	// Only deal with scroll view superviews

@@ -41,11 +41,13 @@
     return CGSizeMake(WIDTH * 8.0f, 34.0f);
 }
 
+// 处理触摸点的值更新
 - (void)updateValueAtPoint:(CGPoint) p
 {
 	NSUInteger newValue = 0;
 	UIImageView *changedView = nil;
 	
+	// 在触摸时增加星星
 	for (UIImageView *eachItem in [self subviews])
 		if (p.x < eachItem.frame.origin.x)
 		{
@@ -58,6 +60,7 @@
 			newValue++;
 		}
 	
+	// 处理值更新
 	if (self.value != newValue)
 	{
 		self.value = newValue;
