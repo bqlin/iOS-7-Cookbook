@@ -11,9 +11,9 @@
 #import "Utility.h"
 
 
-#pragma mark - DragView
+#pragma mark - DragView 类
 
-@interface DragView : UIImageView 类
+@interface DragView : UIImageView
 @end
 
 @implementation DragView

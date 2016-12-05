@@ -116,6 +116,7 @@ const CGFloat kSideLength = 96.0f;
         //dragger.backgroundColor = [UIColor lightGrayColor];
         [self.view addSubview:dragger];
     }
+	[super viewWillAppear:animated];
 }
 
 - (BOOL)prefersStatusBarHidden
